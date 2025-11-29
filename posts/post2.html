@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post 2: Representación de Grafos | Blog de Grafos</title>
+    <meta name="description" content="Aprende sobre Lista de Adyacencia y Matriz de Adyacencia para representar grafos.">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-container">
+            <div class="logo">Grafos</div>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Inicio</a></li>
+                    <li><a href="post1.html">Introducción</a></li>
+                    <li><a href="post2.html">Representación</a></li>
+                    <li><a href="post3.html">Algoritmos</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- BREADCRUMB -->
+        <div class="breadcrumb fade-in">
+            <a href="../index.html">Inicio</a>
+            <span>→</span>
+            <span>Representación de Grafos</span>
+        </div>
+<div class="container">
+    <!-- Hero Section -->
+    <div class="hero">
+          <h1>Representación de Grafos: Lista vs Matriz de Adyacencia</h1>
+        </div>
+    </div>
+        <!-- ARTÍCULO -->
+        <article class="content-wrapper fade-in">
+
+            <!-- INTRODUCCIÓN -->
+            <h2>Introducción</h2>
+
+            <p>
+                Uno de los aspectos más importantes al trabajar con grafos es decidir 
+                <strong>cómo representarlos en memoria</strong>. Existen dos formas principales 
+                y cada una tiene sus propias ventajas y desventajas.
+            </p>
+
+            <!-- SECCIÓN 1: LISTA DE ADYACENCIA -->
+            <h2>1. Lista de Adyacencia</h2>
+
+            <h3>¿Qué es?</h3>
+            <p>
+                Una <strong>lista de adyacencia</strong> es una representación donde cada vértice 
+                tiene asociada una lista con todos sus vértices vecinos (adyacentes).
+            </p>
+
+            <h3>Implementación</h3>
+            <p>
+                Generalmente se implementa usando un diccionario (o mapa hash) donde:
+            </p>
+            <ul>
+                <li><strong>Clave:</strong> El vértice</li>
+                <li><strong>Valor:</strong> Lista de vértices adyacentes</li>
+            </ul>
+
+            <h3>Ejemplo Práctico</h3>
+
+            <p>Considera el siguiente grafo:</p>
+
+            <div class="diagram">
+                <pre>
+      1 ─── 2
+      │ \   │
+      │  \ │
+      3 ─── 4
+                </pre>
+            </div>
+
+            <p>Su representación como lista de adyacencia sería:</p>
+
+            <pre><code>Lista de Adyacencia:
+1: [2, 3, 4]
+2: [1, 4]
+3: [1, 4]
+4: [1, 2, 3]</code></pre>
+
+            <p>En JavaScript:</p>
+
+            <pre><code>const graph = {
+    1: [2, 3, 4],
+    2: [1, 4],
+    3: [1, 4],
+    4: [1, 2, 3]
+};</code></pre>
+
+            <h3>Ventajas de la Lista de Adyacencia</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ventaja</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Eficiencia de espacio</strong></td>
+                        <td>O(V + E) - Solo almacena las aristas que existen</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ideal para grafos dispersos</strong></td>
+                        <td>Cuando el número de aristas es mucho menor que V²</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Iteración eficiente</strong></td>
+                        <td>Acceso rápido a los vecinos de un vértice</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Flexible</strong></td>
+                        <td>Fácil para agregar o eliminar vértices</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Desventajas de la Lista de Adyacencia</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Desventaja</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Búsqueda de arista</strong></td>
+                        <td>O(grado del vértice) - No es constante</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Menos eficiente para grafos densos</strong></td>
+                        <td>Cuando hay muchas aristas (cercano a V²)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Más complejo en código</strong></td>
+                        <td>Requiere manejo de listas dinámicas</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- SECCIÓN 2: MATRIZ DE ADYACENCIA -->
+            <h2>2. Matriz de Adyacencia</h2>
+
+            <h3>¿Qué es?</h3>
+            <p>
+                Una <strong>matriz de adyacencia</strong> es una matriz cuadrada de dimensión V × V 
+                donde cada elemento matriz[i][j] indica si existe una arista del vértice i al vértice j.
+            </p>
+
+            <h3>Valores en la Matriz</h3>
+            <ul>
+                <li><strong>0:</strong> No existe arista</li>
+                <li><strong>1:</strong> Existe arista (grafo no ponderado)</li>
+                <li><strong>w:</strong> Peso de la arista (grafo ponderado)</li>
+            </ul>
+
+            <h3>Ejemplo Práctico</h3>
+
+            <p>Para el mismo grafo anterior, la matriz de adyacencia sería:</p>
+
+            <pre><code>Matriz de Adyacencia (Grafo No Dirigido):
+
+    1  2  3  4
+1 [ 0  1  1  1 ]
+2 [ 1  0  0  1 ]
+3 [ 1  0  0  1 ]
+4 [ 1  1  1  0 ]</code></pre>
+
+            <p>En JavaScript:</p>
+
+            <pre><code>const matrix = [
+    [0, 1, 1, 1],
+    [1, 0, 0, 1],
+    [1, 0, 0, 1],
+    [1, 1, 1, 0]
+];</code></pre>
+
+            <h3>Ventajas de la Matriz de Adyacencia</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ventaja</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Búsqueda rápida de arista</strong></td>
+                        <td>O(1) - Acceso directo al elemento</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ideal para grafos densos</strong></td>
+                        <td>Cuando hay muchas aristas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Simple de implementar</strong></td>
+                        <td>Solo se necesita un array bidimensional</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Operaciones matriciales</strong></td>
+                        <td>Permite usar algoritmos de álgebra lineal</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Desventajas de la Matriz de Adyacencia</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Desventaja</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Uso de memoria</strong></td>
+                        <td>O(V²) - Incluso si hay pocas aristas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ineficiente para grafos dispersos</strong></td>
+                        <td>Desperdicia espacio almacenando ceros</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Agregar vértices es costoso</strong></td>
+                        <td>Requiere crear una nueva matriz más grande</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- SECCIÓN 3: COMPARACIÓN -->
+            <h2>3. Comparación Directa</h2>
+
+            <h3>Análisis de Complejidad</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operación</th>
+                        <th>Lista de Adyacencia</th>
+                        <th>Matriz de Adyacencia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Espacio</strong></td>
+                        <td>O(V + E)</td>
+                        <td>O(V²)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Buscar arista</strong></td>
+                        <td>O(grado)</td>
+                        <td>O(1)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Insertar arista</strong></td>
+                        <td>O(1)</td>
+                        <td>O(1)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Eliminar arista</strong></td>
+                        <td>O(grado)</td>
+                        <td>O(1)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Iterar vecinos</strong></td>
+                        <td>O(grado)</td>
+                        <td>O(V)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Recorrer todas aristas</strong></td>
+                        <td>O(V + E)</td>
+                        <td>O(V²)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Ejemplo Comparativo: Mismo Grafo, Diferentes Representaciones</h3>
+
+            <p>
+                Consideremos un grafo con 4 vértices y conexiones específicas:
+            </p>
+
+            <div class="diagram">
+                <h4>El Grafo:</h4>
+                <pre>
+                       A ──── B                       
+                       │  ╱   │                  
+                       │ ╱    │                  
+                       C ──── D                  
+                </pre>
+            </div>
+
+            <h4>Representación 1: Lista de Adyacencia</h4>
+
+            <pre><code>A: [B, C, D]
+B: [A, D]
+C: [A, D]
+D: [A, B, C]
+
+Espacio usado: 4 vértices + (3 + 2 + 2 + 3) = 14 elementos
+En Python:
+graph = {
+    'A': ['B', 'C', 'D'],
+    'B': ['A', 'D'],
+    'C': ['A', 'D'],
+    'D': ['A', 'B', 'C']
+}</code></pre>
+
+            <h4>Representación 2: Matriz de Adyacencia</h4>
+
+            <pre><code>    A  B  C  D
+A [ 0  1  1  1 ]
+B [ 1  0  0  1 ]
+C [ 1  0  0  1 ]
+D [ 1  1  1  0 ]
+
+Espacio usado: 16 elementos (4 × 4)
+En Python:
+matrix = [
+    [0, 1, 1, 1],
+    [1, 0, 0, 1],
+    [1, 0, 0, 1],
+    [1, 1, 1, 0]
+]</code></pre>
+
+            <!-- SECCIÓN 4: ¿CUÁL ELEGIR? -->
+            <h2>4. ¿Cuál Representación Elegir?</h2>
+
+            <h3>Usa Lista de Adyacencia cuando:</h3>
+            <ul>
+                <li>El grafo es <strong>disperso</strong> (pocas aristas comparadas con V²)</li>
+                <li>Necesitas <strong>iterar sobre vecinos</strong> frecuentemente</li>
+                <li>El <strong>espacio es limitado</strong></li>
+                <li>Necesitas <strong>agregar o eliminar vértices</strong> dinámicamente</li>
+                <li>La mayoría de aplicaciones prácticas</li>
+            </ul>
+
+            <h3>Usa Matriz de Adyacencia cuando:</h3>
+            <ul>
+                <li>El grafo es <strong>denso</strong> (muchas aristas, cercano a V²)</li>
+                <li>Necesitas <strong>búsquedas rápidas</strong> de aristas específicas</li>
+                <li>El número de vértices es <strong>pequeño</strong> (< 1000)</li>
+                <li>Necesitas aplicar <strong>álgebra matricial</strong></li>
+                <li>La simpleza de código es importante</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ Regla práctica:</strong> En la mayoría de casos prácticos, 
+                especialmente en redes sociales, mapas y sistemas de recomendación, 
+                los grafos son dispersos. Por lo tanto, la <strong>lista de adyacencia</strong> 
+                es generalmente la mejor opción.
+            </div>
+
+            <!-- NAVEGACIÓN DE POSTS -->
+            <div class="post-navigation">
+                <a href="post1.html" class="nav-button">← Anterior: Introducción</a>
+                <a href="post3.html" class="nav-button">Siguiente: Algoritmos →</a>
+            </div>
+        </article>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p><strong>Blog Técnico de Grafos</strong></p>
+        <p>Post 2: Representación de Grafos | Noviembre 2025</p>
+        <div class="footer-links">
+            <a href="../index.html">Inicio</a>
+            <a href="post1.html">Post 1</a>
+            <a href="post2.html">Post 2</a>
+            <a href="post3.html">Post 3</a>
+        </div>
+        <p>&copy; 2025 Blog de Grafos. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

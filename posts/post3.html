@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post 3: Algoritmos de Recorrido BFS y DFS | Blog de Grafos</title>
+    <meta name="description" content="Aprende sobre los algoritmos fundamentales de recorrido de grafos: BFS y DFS.">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-container">
+            <div class="logo">Grafos</div>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Inicio</a></li>
+                    <li><a href="post1.html">Introducción</a></li>
+                    <li><a href="post2.html">Representación</a></li>
+                    <li><a href="post3.html">Algoritmos</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- BREADCRUMB -->
+        <div class="breadcrumb fade-in">
+            <a href="../index.html">Inicio</a>
+            <span>→</span>
+            <span>Algoritmos de Recorrido</span>
+        </div>
+<div class="container">
+    <!-- Hero Section -->
+    <div class="hero">
+         <h1>Algoritmos Fundamentales de Recorrido: BFS y DFS</h1>
+        </div>
+    </div>
+        <!-- ARTÍCULO -->
+        <article class="content-wrapper fade-in">
+
+            <!-- INTRODUCCIÓN -->
+            <h2>Introducción</h2>
+
+            <p>
+                Los <strong>algoritmos de recorrido</strong> son la base para explorar y procesar grafos.
+                Permiten visitar todos los nodos de un grafo de manera sistemática.
+                Los dos más importantes son BFS y DFS.
+            </p>
+
+            <p>
+                Ambos tienen la misma complejidad <strong>O(V + E)</strong>, pero difieren 
+                en el orden en que visitan los nodos.
+            </p>
+
+            <!-- SECCIÓN 1: BFS -->
+            <h2>1. BFS - Búsqueda en Amplitud (Breadth-First Search)</h2>
+
+            <h3>¿Qué es BFS?</h3>
+            <p>
+                <strong>BFS</strong> es un algoritmo que recorre el grafo por niveles. 
+                Comienza en un nodo inicial y visita todos los nodos a distancia 1, 
+                luego todos a distancia 2, y así sucesivamente.
+            </p>
+
+            <h3>Características Clave</h3>
+            <ul>
+                <li>Usa una <strong>cola (FIFO)</strong></li>
+                <li>Visita nodos en orden de distancia</li>
+                <li>Encuentra el <strong>camino más corto</strong> en grafos no ponderados</li>
+                <li>Ideal para exploración por niveles</li>
+            </ul>
+
+            <h3>Pseudocódigo</h3>
+
+            <pre><code>BFS(grafo, inicio)
+    visitados = conjunto vacío
+    cola = [inicio]
+    
+    mientras cola no esté vacía:
+        nodo = cola.sacar_del_inicio()
+        
+        si nodo no está en visitados:
+            visitados.agregar(nodo)
+            procesar(nodo)
+            
+            para cada vecino de nodo:
+                si vecino no está en visitados:
+                    cola.agregar(vecino)
+    
+    retornar visitados</code></pre>
+
+            <h3>Implementación en JavaScript</h3>
+
+            <pre><code>function bfs(grafo, inicio) {
+    const visitados = new Set();
+    const cola = [inicio];
+    const resultado = [];
+    
+    while (cola.length > 0) {
+        const nodo = cola.shift();
+        
+        if (!visitados.has(nodo)) {
+            visitados.add(nodo);
+            resultado.push(nodo);
+            
+            const vecinos = grafo[nodo] || [];
+            for (const vecino of vecinos) {
+                if (!visitados.has(vecino)) {
+                    cola.push(vecino);
+                }
+            }
+        }
+    }
+    
+    return resultado;
+}</code></pre>
+
+            <h3>Ejemplo Paso a Paso</h3>
+
+            <p>Consideremos el siguiente grafo:</p>
+
+            <div class="diagram">
+                <pre>
+      A ──── B
+      │      │
+      C ──── D
+      │
+      E
+                </pre>
+            </div>
+
+            <p>Representación como lista de adyacencia:</p>
+
+            <pre><code>A: [B, C]
+B: [A, D]
+C: [A, D, E]
+D: [B, C]
+E: [C]</code></pre>
+
+            <p><strong>Ejecución de BFS desde A:</strong></p>
+
+            <pre><code>Paso 1: Inicio
+  Visitados: {A}
+  Cola: [B, C]
+  Resultado: [A]
+
+Paso 2: Procesar B
+  Visitados: {A, B}
+  Cola: [C, D]
+  Resultado: [A, B]
+
+Paso 3: Procesar C
+  Visitados: {A, B, C}
+  Cola: [D, E]
+  Resultado: [A, B, C]
+
+Paso 4: Procesar D
+  Visitados: {A, B, C, D}
+  Cola: [E]
+  Resultado: [A, B, C, D]
+
+Paso 5: Procesar E
+  Visitados: {A, B, C, D, E}
+  Cola: []
+  Resultado: [A, B, C, D, E]
+
+ORDEN FINAL BFS: A, B, C, D, E</code></pre>
+
+            <h3>Complejidad de BFS</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Complejidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tiempo</strong></td>
+                        <td>O(V + E)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Espacio (cola)</strong></td>
+                        <td>O(V)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Aplicaciones de BFS</h3>
+
+            <ul>
+                <li>✓ Encontrar el <strong>camino más corto</strong> (grafos no ponderados)</li>
+                <li>✓ Detección de <strong>componentes conexas</strong></li>
+                <li>✓ Análisis de <strong>amplitud de redes</strong></li>
+                <li>✓ <strong>Web crawling</strong> - exploración por niveles</li>
+                <li>✓ Resolución de <strong>laberintos</strong></li>
+                <li>✓ <strong>Recomendaciones</strong> - amigos a N grados de distancia</li>
+            </ul>
+
+            <!-- SECCIÓN 2: DFS -->
+            <h2>2. DFS - Búsqueda en Profundidad (Depth-First Search)</h2>
+
+            <h3>¿Qué es DFS?</h3>
+            <p>
+                <strong>DFS</strong> es un algoritmo que explora el grafo en profundidad. 
+                Comienza en un nodo inicial y sigue el camino lo más profundo posible 
+                antes de retroceder.
+            </p>
+
+            <h3>Características Clave</h3>
+            <ul>
+                <li>Usa una <strong>pila (LIFO)</strong></li>
+                <li>Explora en profundidad antes que amplitud</li>
+                <li>Puede ser <strong>recursivo o iterativo</strong></li>
+                <li>Útil para detección de <strong>ciclos</strong></li>
+            </ul>
+
+            <h3>Pseudocódigo (Recursivo)</h3>
+
+            <pre><code>DFS(grafo, inicio)
+    visitados = conjunto vacío
+    
+    función dfs_recursivo(nodo)
+        visitados.agregar(nodo)
+        procesar(nodo)
+        
+        para cada vecino de nodo:
+            si vecino no está en visitados:
+                dfs_recursivo(vecino)
+    
+    dfs_recursivo(inicio)
+    retornar visitados</code></pre>
+
+            <h3>Implementación en JavaScript (Recursivo)</h3>
+
+            <pre><code>function dfs(grafo, inicio) {
+    const visitados = new Set();
+    const resultado = [];
+    
+    function dfsRecursivo(nodo) {
+        visitados.add(nodo);
+        resultado.push(nodo);
+        
+        const vecinos = grafo[nodo] || [];
+        for (const vecino of vecinos) {
+            if (!visitados.has(vecino)) {
+                dfsRecursivo(vecino);
+            }
+        }
+    }
+    
+    dfsRecursivo(inicio);
+    return resultado;
+}</code></pre>
+
+            <h3>Implementación en JavaScript (Iterativo)</h3>
+
+            <pre><code>function dfsIterativo(grafo, inicio) {
+    const visitados = new Set();
+    const pila = [inicio];
+    const resultado = [];
+    
+    while (pila.length > 0) {
+        const nodo = pila.pop();
+        
+        if (!visitados.has(nodo)) {
+            visitados.add(nodo);
+            resultado.push(nodo);
+            
+            const vecinos = grafo[nodo] || [];
+            for (let i = vecinos.length - 1; i >= 0; i--) {
+                if (!visitados.has(vecinos[i])) {
+                    pila.push(vecinos[i]);
+                }
+            }
+        }
+    }
+    
+    return resultado;
+}</code></pre>
+
+            <h3>Ejemplo Paso a Paso</h3>
+
+            <p><strong>Ejecución de DFS desde A (versión recursiva):</strong></p>
+
+            <pre><code>Paso 1: Visitar A
+  dfs(A)
+  Visitados: {A}
+  Resultado: [A]
+  Vecinos: [B, C]
+
+Paso 2: Visitar B (primer vecino)
+  dfs(B)
+  Visitados: {A, B}
+  Resultado: [A, B]
+  Vecinos: [A(visitado), D]
+
+Paso 3: Visitar D (vecino de B)
+  dfs(D)
+  Visitados: {A, B, D}
+  Resultado: [A, B, D]
+  Vecinos: [B(visitado), C]
+
+Paso 4: Visitar C (vecino de D)
+  dfs(C)
+  Visitados: {A, B, D, C}
+  Resultado: [A, B, D, C]
+  Vecinos: [A(visitado), D(visitado), E]
+
+Paso 5: Visitar E (vecino de C)
+  dfs(E)
+  Visitados: {A, B, D, C, E}
+  Resultado: [A, B, D, C, E]
+  Vecinos: [C(visitado)]
+
+ORDEN FINAL DFS: A, B, D, C, E</code></pre>
+
+            <h3>Complejidad de DFS</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Métrica</th>
+                        <th>Complejidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Tiempo</strong></td>
+                        <td>O(V + E)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Espacio (pila recursión)</strong></td>
+                        <td>O(V)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Aplicaciones de DFS</h3>
+
+            <ul>
+                <li>✓ Detección de <strong>ciclos</strong> en grafos</li>
+                <li>✓ <strong>Ordenamiento topológico</strong> (grafos acíclicos dirigidos)</li>
+                <li>✓ Búsqueda de <strong>componentes fuertemente conexas</strong></li>
+                <li>✓ Resolución de <strong>puzzles</strong> con backtracking</li>
+                <li>✓ Generación de <strong>árboles de decisión</strong></li>
+                <li>✓ Detección de <strong>puentes</strong> en grafos</li>
+            </ul>
+
+            <!-- SECCIÓN 3: COMPARACIÓN -->
+            <h2>3. Comparación BFS vs DFS</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>BFS</th>
+                        <th>DFS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Estructura de datos</strong></td>
+                        <td>Cola (FIFO)</td>
+                        <td>Pila (LIFO) / Recursión</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Complejidad tiempo</strong></td>
+                        <td>O(V + E)</td>
+                        <td>O(V + E)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Complejidad espacio</strong></td>
+                        <td>O(V)</td>
+                        <td>O(V)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Patrón de exploración</strong></td>
+                        <td>Amplitud (nivel a nivel)</td>
+                        <td>Profundidad (rama completa)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Camino más corto</strong></td>
+                        <td>✓ Sí (no ponderado)</td>
+                        <td>✗ No garantizado</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Detecta ciclos</strong></td>
+                        <td>✓ Sí</td>
+                        <td>✓ Sí (mejor)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Topological sort</strong></td>
+                        <td>✗ No</td>
+                        <td>✓ Sí</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Implementación</strong></td>
+                        <td>Iterativo (más simple)</td>
+                        <td>Recursivo (más elegante)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- SECCIÓN 4: EJEMPLO VISUAL -->
+            <h2>4. Visualización del Orden de Recorrido</h2>
+
+            <div class="diagram">
+                <h4>Mismo Grafo - Diferentes Recorridos</h4>
+
+                <p><strong>BFS (Nivel por nivel):</strong></p>
+                <pre>
+Nivel 0: [A]
+Nivel 1: [B, C]
+Nivel 2: [D, E]
+
+Orden BFS: A → B → C → D → E
+                </pre>
+
+                <p><strong>DFS (Profundidad primero):</strong></p>
+                <pre>
+Rama 1: A → B → D → C → E
+
+Orden DFS: A → B → D → C → E
+                </pre>
+            </div>
+
+            <!-- SECCIÓN 5: APLICACIÓN PRÁCTICA -->
+            <h2>5. Casos de Uso en el Mundo Real</h2>
+
+            <h3>Cuándo usar BFS:</h3>
+            <ul>
+                <li>🌍 <strong>Google Maps:</strong> Encontrar la ruta más corta</li>
+                <li>📱 <strong>Redes sociales:</strong> Amigos a N grados de distancia</li>
+                <li>🎮 <strong>Videojuegos:</strong> Detección de enemigos cercanos</li>
+                <li>🏥 <strong>Redes de hospitales:</strong> Hospital más cercano</li>
+            </ul>
+
+            <h3>Cuándo usar DFS:</h3>
+            <ul>
+                <li>🌳 <strong>Generación de laberintos:</strong> Exploración profunda</li>
+                <li>🔍 <strong>Detección de deadlocks:</strong> Ciclos en grafos</li>
+                <li>🏗️ <strong>Compiladores:</strong> Análisis de dependencias</li>
+                <li>🔓 <strong>Resolver puzzles:</strong> Backtracking</li>
+            </ul>
+
+            <div class="info-box">
+                <strong>💡 Recomendación:</strong> Para la mayoría de problemas, 
+                comienza con <strong>BFS</strong> porque es más intuitivo y sus aplicaciones 
+                son más comunes.
+            </div>
+
+            <!-- SECCIÓN 6: RESUMEN -->
+            <h2>6. Resumen</h2>
+
+            <p>
+                <strong>BFS</strong> y <strong>DFS</strong> son dos algoritmos fundamentales 
+                que permiten explorar grafos de manera exhaustiva.
+            </p>
+
+            <ul>
+                <li><strong>BFS</strong> es ideal para encontrar caminos cortos y análisis por niveles</li>
+                <li><strong>DFS</strong> es ideal para detectar ciclos y backtracking</li>
+                <li>Ambos tienen la misma complejidad temporal <strong>O(V + E)</strong></li>
+                <li>La elección depende del problema específico</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ Nota importante:</strong> Aunque hemos cubierto los conceptos 
+                básicos de grafos en estos tres posts, estos temas pueden profundizarse mucho más. 
+                Se recomienda practicar implementando estos algoritmos en diferentes lenguajes 
+                de programación.
+            </div>
+
+            <!-- NAVEGACIÓN DE POSTS -->
+            <div class="post-navigation">
+                <a href="post2.html" class="nav-button">← Anterior: Representación</a>
+                <a href="../index.html" class="nav-button">Volver al Inicio →</a>
+            </div>
+        </article>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p><strong>Blog Técnico de Grafos</strong></p>
+        <p>Post 3: Algoritmos de Recorrido | Noviembre 2025</p>
+        <div class="footer-links">
+            <a href="../index.html">Inicio</a>
+            <a href="post1.html">Post 1</a>
+            <a href="post2.html">Post 2</a>
+            <a href="post3.html">Post 3</a>
+        </div>
+        <p>&copy; 2025 Blog de Grafos. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>
